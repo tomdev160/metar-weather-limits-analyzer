@@ -13,7 +13,11 @@ export function parseMETARFile(content: string): ParsedMETAR[] {
 }
 
 export function parseMETARLine(raw: string): ParsedMETAR | null {
-  const tokens = raw.trim().split(/\s+/);
+  const rawTokens = raw.trim().split(/\s+/);
+  const tokens =
+    rawTokens[0] === 'METAR' || rawTokens[0] === 'SPECI'
+      ? rawTokens.slice(1)
+      : rawTokens;
   if (tokens.length < 3) return null;
 
   const icao = tokens[0];
@@ -80,7 +84,11 @@ export function parseMETARFileWithDates(content: string, referenceYear: number, 
 }
 
 function parseMETARLineWithDate(raw: string, year: number, month: number): ParsedMETAR | null {
-  const tokens = raw.trim().split(/\s+/);
+  const rawTokens = raw.trim().split(/\s+/);
+  const tokens =
+    rawTokens[0] === 'METAR' || rawTokens[0] === 'SPECI'
+      ? rawTokens.slice(1)
+      : rawTokens;
   if (tokens.length < 3) return null;
 
   const icao = tokens[0];
